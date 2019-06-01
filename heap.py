@@ -1,4 +1,4 @@
-from basic_structure.vector import mylist
+from basic_structure.mylist import mylist
 from random import randint
 
 class heapnode():
@@ -16,6 +16,11 @@ class heap(mylist):
     @staticmethod
     def leftchild(rank):
         return rank*2+1
+
+    def lastofinterval(self):
+        if len(self) > 1:
+            return int((len(self)-2)/2)
+        return 0
 
     def have_rightchild(self, rank, n):
         return (rank+1)*2 < n
@@ -48,6 +53,13 @@ class heap(mylist):
             self.insert(item)
         del other
 
+    def heaplify_down_version(self):
+        rank = self.lastofinterval()
+        while rank >= 0:
+            self.percolatedown(rank, len(self))
+            rank -= 1
+
+
     def heaplify_self(self):
         lo = 1
         hi = len(self)
@@ -57,7 +69,7 @@ class heap(mylist):
 
 
     def heap_sort(self):
-        self.heaplify_self()
+        self.heaplify_down_version()
         last = len(self)-1
         while last > 0:
             self.swap(0, last)
@@ -114,6 +126,6 @@ class heap(mylist):
 
 
 if __name__ == "__main__":
-    h = heap([randint(0, 100000)for i in range(100000)])
+    h = heap([randint(0, 100)for i in range(10)])
     h.heap_sort()
     print(h)
